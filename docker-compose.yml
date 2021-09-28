@@ -7,3 +7,14 @@ services:
       - 8000:8000
     volumes:
       - .:/app
+    depends_on:
+      - db
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: secret_board
+      TZ: "Asia/Tokyo"
+    volumes:
+      - ../secret-board-db:/var/lib/postgresql/data
