@@ -14,6 +14,12 @@ html(lang="jp")
         button(type="submit") 投稿
     h2 投稿一覧
     each post in posts
+      h5 #{post.id} : ID: #{post.trackingCookie} / user: #{post.postedBy}
       p #{post.content}
       p 投稿日時： #{post.createdAt}
+      - let isDeletable = (user === post.postedBy && track_id === post.trackingCookie)
+      if isDeletable
+        form(method="post" action="/posts?delete=1")
+          input(type="hidden" name="id" value=post.id)
+          input(type="submit" value="削除") 
       hr
