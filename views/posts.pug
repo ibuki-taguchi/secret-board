@@ -16,6 +16,7 @@ html(lang="jp")
     form(method="post" action="/posts")
       div.form-group
         textarea(name="content" rows=4).form-control
+        input(type="hidden" name="csrfToken" value=csrfToken)
       div.form-group
         button(type="submit").btn.btn-primary 投稿
     h2 投稿一覧
@@ -36,11 +37,12 @@ html(lang="jp")
           div 投稿日時： #{post.formatCreatedAt}
           if isAdmin
             div 投稿者: #{post.postedBy}
-            - let isDeletable = ((user === post.postedBy && track_id === post.trackingCookie) || isAdmin)
-            if isDeletable
-              form(method="post" action="/posts?delete=1")
-                input(type="hidden" name="id" value=post.id)
-                input(type="submit" value="削除").btn.btn-danger.float-right
+          - let isDeletable = ((user === post.postedBy) || isAdmin)
+          if isDeletable
+            form(method="post" action="/posts?delete=1")
+              input(type="hidden" name="id" value=post.id)
+              input(type="submit" value="削除").btn.btn-danger.float-right
+              input(type="hidden" name="csrfToken" value=csrfToken)
 
     script(src="https://code.jquery.com/jquery-3.4.1.slim.min.js")
     script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js",
